@@ -1,11 +1,11 @@
-import llm_config.LLMConnector as llmConn
 from langchain_core.prompts import ChatPromptTemplate
+
+from llm_config import LLMConnector
 from mailbox_module import Mailbox
-from db_module import MailORM
+from entities import MailORM
 from extract_module import MailInfoExtractor
 import json
 from datetime import datetime
-from utils_module import log_factory
 import logging
 import sys
 
@@ -19,10 +19,10 @@ def process_email():
     # logger = logger.getLogger(__name__)
     logger  = get_logger()
     # todo: till nest wes
-    # 1. structure image /upload project to github
-    # 2. put extractor/ kick off identifier/ relationship validator/ sql (where) generator in to python class
+    # 1. structure image /upload project to github DONE
+    # 2. put extractor/ kick off identifier/ relationship validator/ sql (where) generator in to python class DONE
     # 3. add mail model class and response model class
-    # 4. integrate agent-core tool, add ticket process tool
+    # 4. integrate agent-core tool, add ticket process tool DONE
     # 5. remove the if else in process mail
     # 6. optimize the prompt referring agent-core example
     #
@@ -38,7 +38,7 @@ def process_email():
         logger.info("No new mail in mail box... \n")
         return
 
-    logger.info("Email Extract Rescult: \n" + str(mail))
+    logger.info("Email Extract Result: \n" + str(mail))
 
     # extract the transaction information in the email
     business_info = MailInfoExtractor.extract_business_info(
@@ -126,7 +126,7 @@ def is_kick_off_mail(mail_text):
     )
 
     # get llm connection
-    llm = llmConn.get_llm()
+    llm = LLMConnector.get_llm()
     # structured_llm = llm.with_structured_output(schema=MailMessageBM)
 
     # if (mailText == None): mailText = "MIME-Version: 1.0\nDate: Thu, 6 Feb 2025 16:50:56 +0800\nMessage-ID: <CAKHC1N6-KcTmtjzJ+k906qNX5nPcR7H8123ERBmSszQ_KAPLBQ@mail.gmail.com>\nSubject: Greeting email from Nora\nFrom: ZHONG waner <zhongwaner91@gmail.com>\nTo: 1403585646@qq.com\nContent-Type: multipart/alternative; boundary=\"0000000000002859e9062d755748\"\n\n\n--0000000000002859e9062d755748\nContent-Type: text/plain; charset=\"UTF-8\"\n\nHi there,\n\nThe weather is very nice today, hope everything is going well for you!\n\nYours,\nNora\n\n--0000000000002859e9062d755748\nContent-Type: text/html; charset=\"UTF-8\"\n\n<div dir=\"ltr\">Hi there,<div><br><div>The weather is very nice today, hope everything is going well for you!</div><div><br></div><div>Yours,</div><div>Nora</div></div></div>\n\n--0000000000002859e9062d755748--"
@@ -176,7 +176,7 @@ def is_related_mail(mail_text1, mail_text2):
     )
 
     # get llm connection
-    llm = llmConn.get_llm()
+    llm = LLMConnector.get_llm()
     # structured_llm = llm.with_structured_output(schema=MailMessageBM)
     # if (mailText == None): mailText = "MIME-Version: 1.0\nDate: Thu, 6 Feb 2025 16:50:56 +0800\nMessage-ID: <CAKHC1N6-KcTmtjzJ+k906qNX5nPcR7H8123ERBmSszQ_KAPLBQ@mail.gmail.com>\nSubject: Greeting email from Nora\nFrom: ZHONG waner <zhongwaner91@gmail.com>\nTo: 1403585646@qq.com\nContent-Type: multipart/alternative; boundary=\"0000000000002859e9062d755748\"\n\n\n--0000000000002859e9062d755748\nContent-Type: text/plain; charset=\"UTF-8\"\n\nHi there,\n\nThe weather is very nice today, hope everything is going well for you!\n\nYours,\nNora\n\n--0000000000002859e9062d755748\nContent-Type: text/html; charset=\"UTF-8\"\n\n<div dir=\"ltr\">Hi there,<div><br><div>The weather is very nice today, hope everything is going well for you!</div><div><br></div><div>Yours,</div><div>Nora</div></div></div>\n\n--0000000000002859e9062d755748--"
     prompt = prompt_template.invoke({"text": "{ mail1: "+mail_text1+", mail2: "+mail_text2+" }"})
@@ -279,7 +279,7 @@ def get_related_email_sql(mail_text):
     )
 
     # get llm connection
-    llm = llmConn.get_llm()
+    llm = LLMConnector.get_llm()
     # structured_llm = llm.with_structured_output(schema=MailMessageBM)
 
     # if (mailText == None): mailText = "MIME-Version: 1.0\nDate: Thu, 6 Feb 2025 16:50:56 +0800\nMessage-ID: <CAKHC1N6-KcTmtjzJ+k906qNX5nPcR7H8123ERBmSszQ_KAPLBQ@mail.gmail.com>\nSubject: Greeting email from Nora\nFrom: ZHONG waner <zhongwaner91@gmail.com>\nTo: 1403585646@qq.com\nContent-Type: multipart/alternative; boundary=\"0000000000002859e9062d755748\"\n\n\n--0000000000002859e9062d755748\nContent-Type: text/plain; charset=\"UTF-8\"\n\nHi there,\n\nThe weather is very nice today, hope everything is going well for you!\n\nYours,\nNora\n\n--0000000000002859e9062d755748\nContent-Type: text/html; charset=\"UTF-8\"\n\n<div dir=\"ltr\">Hi there,<div><br><div>The weather is very nice today, hope everything is going well for you!</div><div><br></div><div>Yours,</div><div>Nora</div></div></div>\n\n--0000000000002859e9062d755748--"

@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from pony import orm
-from db_module import PonyDBConn as dbConnector
+from entities import PonyDBConn as dbConnector
 
 # init db step
 db = dbConnector.getDB()
@@ -39,10 +39,10 @@ def get_mail_by_id(id) :
     return mail
 
 # fuzzy match query by mail subject
-@orm.db_session
-def get_mail_by_id(subject) :
-    mails = Mail.select(lambda m: subject in m.SUBJECT).get()
-    return mails
+# @orm.db_session
+# def get_mail_by_id(subject) :
+#     mails = Mail.select(lambda m: subject in m.SUBJECT).get()
+#     return mails
 
 # get mail by raw sql
 @orm.db_session

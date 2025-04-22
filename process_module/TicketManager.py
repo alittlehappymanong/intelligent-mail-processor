@@ -1,5 +1,3 @@
-import llm_config.LLMConnector as llmConn
-from langchain_core.prompts import ChatPromptTemplate
 
 
 
@@ -19,7 +17,7 @@ from langchain_core.prompts import ChatPromptTemplate
 # print(json.dumps(str(mail)))
 from process_module import email_processor
 import json
-from db_module import  MailORM
+from entities import  MailORM
 
 
 mails = MailORM.get_mail_by_sql("SELECT * FROM mail WHERE SUBJECT = 'Normal flow 4.18-3'")
