@@ -67,6 +67,8 @@ class EmailProcessor:
                  mailbox_processor.move_first,
                  ticket_repo.create_ticket,
                  ticket_repo.update_ticket_assignee,
+                 ticket_repo.update_ticket_transaction_type,
+                 ticket_repo.find_tickets_by_message_id,
                  identifiers.is_kick_off_mail,
                  validators.is_related_mail,
                  generators.get_related_email_sql,

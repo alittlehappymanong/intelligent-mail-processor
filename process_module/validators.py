@@ -6,10 +6,10 @@ from utils_module import log_factory
 
 @tool
 def is_related_mail(mail_text1:str, mail_text2:str):
-    """validate if two email is related mails
+    """validate if two emails are related mails
 
-    :param mail_text1: the first email info
-    :param mail_text2: the second email info
+    :param mail_text1: the first email
+    :param mail_text2: the second email
     :return: the result
     """
     logger = log_factory.get_logger()
@@ -55,10 +55,7 @@ def is_related_mail(mail_text1:str, mail_text2:str):
 
     # get llm connection
     llm = LLMConnector.get_llm()
-    # structured_llm = llm.with_structured_output(schema=MailMessageBM)
-    # if (mailText == None): mailText = "MIME-Version: 1.0\nDate: Thu, 6 Feb 2025 16:50:56 +0800\nMessage-ID: <CAKHC1N6-KcTmtjzJ+k906qNX5nPcR7H8123ERBmSszQ_KAPLBQ@mail.gmail.com>\nSubject: Greeting email from Nora\nFrom: ZHONG waner <zhongwaner91@gmail.com>\nTo: 1403585646@qq.com\nContent-Type: multipart/alternative; boundary=\"0000000000002859e9062d755748\"\n\n\n--0000000000002859e9062d755748\nContent-Type: text/plain; charset=\"UTF-8\"\n\nHi there,\n\nThe weather is very nice today, hope everything is going well for you!\n\nYours,\nNora\n\n--0000000000002859e9062d755748\nContent-Type: text/html; charset=\"UTF-8\"\n\n<div dir=\"ltr\">Hi there,<div><br><div>The weather is very nice today, hope everything is going well for you!</div><div><br></div><div>Yours,</div><div>Nora</div></div></div>\n\n--0000000000002859e9062d755748--"
     prompt = prompt_template.invoke({"text": "{ mail1: " + mail_text1 + ", mail2: " + mail_text2 + " }"})
-    # mail = structured_llm.invoke(prompt)
     mail = llm.invoke(prompt)
     result = mail.model_dump()
     logger.info("check result: "+str(result))

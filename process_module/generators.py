@@ -49,10 +49,11 @@ def get_related_email_sql(mail_text: str):
                 "5.2 If not, then will find the same subject and latest related mail saved in db, "
                 "5.3 if find then get the related transaction in the related mail's record, get the all the ticket not closed and do update."
 
-                "Below are three solution, choose one to generate sql. (do not add in output)"
+                "Below are three solution, choose one to generate sql, please better use fuzzy match. (do not add in output)"
                 "1. Fuzzy match kick off email with email subject."
                 "2. Fuzzy Match kick off email with header field References . "
                 "3. Fuzzy match kick off email with body content. "
+                "4. Fuzzy match kick off email with mail to. "
 
                 "If need to find related mail, then give a raw sql to query one mail's related mail in database according to the chose solution, output 'sql': sql, remove ';' in the end of the sql."
                 "Correspondence rules between attributes and database column, please use these column name and mail real property to generate sql:"

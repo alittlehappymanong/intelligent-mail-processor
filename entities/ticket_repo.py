@@ -40,6 +40,36 @@ def update_ticket_assignee(message_id, subject, assignee):
 
 @tool
 @orm.db_session
+def find_tickets_by_message_id(message_id):
+    """find mail message's related tickets, get tickets by message id
+
+    :param message_id: related mail message id
+    :return: tickets list
+    """
+    tickets = list(Tickets.select(lambda t: t.MESSAGE_ID == message_id))
+    return tickets
+
+# update ticket transaction type by message id and subject
+@tool
+@orm.db_session
+def update_ticket_transaction_type(message_id, subject, transaction_type):
+    """update ticket's attribute transaction type by ticket's mail message id and ticket's subject
+
+    :param message_id: the message id of mail which related with the ticket and saved in the ticket record
+    :param subject: the subject of mail which related with the ticket and saved in the ticket record
+    :param transaction_type: new transaction type need to update in the ticket record
+    :return: none
+    """
+    logger = log_factory.get_logger()
+    logger.info("start updating ticket's transaction type, message id: %s, subject: %s, transaction type: %s", message_id, subject, transaction_type)
+    tickets = list(Tickets.select(lambda t: t.MESSAGE_ID == message_id and t.SUBJECT == subject))
+    for tk in tickets:
+        tk.set(TRANSACTION_TYPE=transaction_type)
+    logger.info("update done...")
+    return True
+
+@tool
+@orm.db_session
 def create_ticket(subject, message_id, assignee='', transaction_type=''):
     """create and save ticket in db
 
