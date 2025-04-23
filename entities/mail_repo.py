@@ -15,6 +15,7 @@ class Mail(db.Entity):
     MAIL_BODY = orm.Optional(str)
     REFERENCE_LIST = orm.Optional(str)
     REPLY_TO = orm.Optional(str)
+    TICKET_ID = orm.Optional(str)
 
 # before this need to def entity
 db.generate_mapping(create_tables=True)
@@ -22,7 +23,7 @@ db.generate_mapping(create_tables=True)
 # insert
 @tool
 @orm.db_session
-def save_mail_message(msd_id, subject, m_from, m_to, body, ref, reply):
+def save_mail_message(msd_id, subject, m_from, m_to, body, ref, reply, ticket_id=""):
     """save the mail message in db
 
     :param msd_id: mail message id field in header
@@ -32,6 +33,7 @@ def save_mail_message(msd_id, subject, m_from, m_to, body, ref, reply):
     :param body: mail body
     :param ref: mail references field in header
     :param reply: mail in-reply-to field in header
+    :param ticket_id: ticket id of which ticket related with the mail
     :return: save result mail
     """
     logger = log_factory.get_logger()
@@ -89,3 +91,20 @@ def get_mails_by_sql(sql):
 
     return mails
 
+@tool
+@orm.db_session
+def update_mail_related_ticket(message_id, ticket_id):
+    """update mail's related ticket id by mail's message id
+
+    :param message_id: mail's message id
+    :param ticket_id: the ticket id need to saved in the mail record
+    :return: mails
+    """
+    logger = log_factory.get_logger()
+    logger.info("start updating mail's related ticket is, message id: %s, ticket id: %s",
+                message_id, ticket_id)
+    mails = list(Mail.select(lambda m: m.MESSAGE_ID == message_id))
+    for mail in mails:
+        mail.set(TICKET_ID=ticket_id)
+    logger.info("update done...")
+    return mails

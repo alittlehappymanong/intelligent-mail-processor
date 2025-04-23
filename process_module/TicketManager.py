@@ -1,24 +1,6 @@
-
-
-
-
-# create_email = "{email subject: transaction action 3.11, sender Name: 钟婉儿, sender Address: 1403585646@qq.com, received Name: waner zhong, received Address: zhongnora, Recipients: <COMObject <unknown>>, received Time: pywintypes.datetime(2025, 3, 13, 15, 44, 48, 684000, tzinfo=TimeZoneInfo(GMT Standard Time, True)), email body: hi team         Im wrting to create a new transaction record for function team abc@abc         regards         wz                                                               }"
-# update_transaction = "{email subject: transaction action 3.12, sender Name: 钟婉儿, sender Address: 1403585646@qq.com, received Name: waner zhong, received Address: zhongnora, Recipients: <COMObject <unknown>>, received Time: pywintypes.datetime(2025, 3, 13, 15, 44, 48, 684000, tzinfo=TimeZoneInfo(GMT Standard Time, True)), email body: hi team         Im wrting to change the ticket T12345 's transaction team from teamA to teamB         regards         wz                                                               }"
-# update_assignee = "{email subject: transaction action 3.12, sender Name: 钟婉儿, sender Address: 1403585646@qq.com, received Name: waner zhong, received Address: zhongnora, Recipients: <COMObject <unknown>>, received Time: pywintypes.datetime(2025, 3, 13, 15, 44, 48, 684000, tzinfo=TimeZoneInfo(GMT Standard Time, True)), email body: hi team         Im wrting to change assignee to noraZ for the ticket T12345         regards         wz                                                               }"
-# close_ticket = "{email subject: transaction action 3.12, sender Name: 钟婉儿, sender Address: 1403585646@qq.com, received Name: waner zhong, received Address: zhongnora, Recipients: <COMObject <unknown>>, received Time: pywintypes.datetime(2025, 3, 13, 15, 44, 48, 684000, tzinfo=TimeZoneInfo(GMT Standard Time, True)), email body: hi team         Im wrting to close the ticket T12345         regards         wz                                                               }"
-# reopen_ticket = "{email subject: transaction action 3.12, sender Name: 钟婉儿, sender Address: 1403585646@qq.com, received Name: waner zhong, received Address: zhongnora, Recipients: <COMObject <unknown>>, received Time: pywintypes.datetime(2025, 3, 13, 15, 44, 48, 684000, tzinfo=TimeZoneInfo(GMT Standard Time, True)), email body: hi team         Im wrting to reopen the ticket T12345         regards         wz                                                               }"
-
-# import json
-# from mailbox_module import Mailbox
-# mail = Mailbox.retrieve_first()
-# print(mail.get("email subject"))
-# print(str(mail))
-#
-# print(json.dumps(str(mail)))
 from process_module import email_processor
 import json
 from entities import  MailORM
-
 
 mails = MailORM.get_mail_by_sql("SELECT * FROM mail WHERE SUBJECT = 'Normal flow 4.18-3'")
 mail = "{'email subject': 'Re:Normal flow 4.18-3', 'sender Name': '钟婉儿', 'sender Address': '1403585646@qq.com', 'received Name': 'waner zhong', 'received Address': 'zhongnora', 'Recipients': <COMObject <unknown>>, 'received Time': pywintypes.datetime(2025, 4, 18, 12, 4, 11, 130000, tzinfo=TimeZoneInfo('GMT Standard Time', True)), 'email body': 'Normal flow reply2 Original________________________________From:钟婉儿 <1403585646@qq.com>Sent Time:2025-04-18- 11:56To:zhongnora <zhongnora@outlook.com>Subject:Normal flow 4.18-3Normal flow email-1', 'message id': '<tencent_8E0F06177AFDB44E57F36F4338F1A36D6409@qq.com>', 'references': '<tencent_5995D111B2368339BDD75AD9AB3CB7F59C08@qq.com>'}"
@@ -32,6 +14,3 @@ if len(mails) != 0:
     print("Relationship Result: \n" + mail_relation)
 else:
     print("Can not find related mail in db...")
-# related_mail = str(mails.pop(0))
-# mail_relation = email_processor.is_related_mail(related_mail, related_mail)
-# print("Relationship Result: \n" + mail_relation)

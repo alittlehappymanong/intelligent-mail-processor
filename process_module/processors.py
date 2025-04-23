@@ -33,11 +33,9 @@ class EmailProcessor:
                     "Essentially, it organizes the communication around a specific topic or subject line, making it easier to track responses."
                     
                     "Mail processor need find email's related emails in database according to email attributes."
-                    "If not find related email, then create one ticket for this email, and save email message id in ticket record, that means the ticket is this email's related ticket. "
-                    "If find related emails, then find related mails' related tickets, and update ticket."
+                    "If not find related email, then create one ticket for this email, and save email message id in ticket record, and save the ticket id in mail db record, that means the ticket is this email's related ticket. "
+                    "If find related emails, then find related mails' related tickets, and update the latest one ticket, and save the ticket id in mail db record, that means the ticket is the mail's related ticket. "
                     "Email subject or body might contain updating information in mail. " 
-                    
-                    
                     
                     "Tickets need to be persisted in database"
                     "Processed email need to be saved in database. "
@@ -75,7 +73,8 @@ class EmailProcessor:
                  mail_repo.get_mail_by_id,
                  mail_repo.get_mails_by_sql,
                  mail_repo.get_mail_by_subject,
-                 mail_repo.save_mail_message]
+                 mail_repo.save_mail_message,
+                 mail_repo.update_mail_related_ticket]
 
         # Construct the tool calling agent
         # Get the prompt to use - can be replaced with any prompt that includes variables "agent_scratchpad" and "input"!

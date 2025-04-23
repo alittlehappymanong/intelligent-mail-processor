@@ -10,23 +10,7 @@ import logging
 import sys
 
 def process_email():
-    # log_date = datetime.today().strftime('%m-%d')
-    # # config the logger
-    # logger.basicConfig(filename="email_process_" + log_date + ".log",
-    #                     filemode='a',
-    #                     level=logger.INFO,
-    #                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    # logger = logger.getLogger(__name__)
     logger  = get_logger()
-    # todo: till nest wes
-    # 1. structure image /upload project to github DONE
-    # 2. put extractor/ kick off identifier/ relationship validator/ sql (where) generator in to python class DONE
-    # 3. add mail model class and response model class
-    # 4. integrate agent-core tool, add ticket process tool DONE
-    # 5. remove the if else in process mail
-    # 6. optimize the prompt referring agent-core example
-    #
-
 
     logger.info("-----------------------------------------------------------------------------")
     logger.info("----------MAIL PROCESS START--------------------------------------------------")

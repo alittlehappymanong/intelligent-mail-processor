@@ -5,10 +5,10 @@ from langchain_core.tools import tool
 from utils_module import log_factory
 
 @tool
-def get_related_email_sql(mail_text: str):
+def get_related_email_sql(mail_info_json: str):
     """generate sql for finding related emails according to mail attributes
 
-    :param mail_text: the mail information
+    :param mail_info_json: the mail information, format as json
     :return: raw sql, not the related mail
     """
     logger = log_factory.get_logger()
@@ -34,6 +34,7 @@ def get_related_email_sql(mail_text: str):
                 "4.3 Essentially, it organizes the communication around a specific topic or subject line, making it easier to track responses."
                 "4.4 If two email are related email, then they are in same mail thread."
                 "5. First email is the first mail of one mail thread, we can tell it by empty In-Reply-To field."
+                "6. Subject is the mail subject in the mail header field. "
 
                 "Below is the business knowledge related with email: "
                 "1. Kick off email is the first email send to system mailbox in one mail thread."
@@ -53,11 +54,13 @@ def get_related_email_sql(mail_text: str):
                 "1. Fuzzy match kick off email with email subject."
                 "2. Fuzzy Match kick off email with header field References . "
                 "3. Fuzzy match kick off email with body content. "
-                "4. Fuzzy match kick off email with mail to. "
+                "4. Fuzzy match kick off email with mail_to. "
+                "Note that: some time the mail_to value of one mail in different mail system is different, "
+                "so use this to search mail maybe tricky, as our client may use different mail system to send and reply mail, better use fuzzy match manner for mail_to. "
 
                 "If need to find related mail, then give a raw sql to query one mail's related mail in database according to the chose solution, output 'sql': sql, remove ';' in the end of the sql."
                 "Correspondence rules between attributes and database column, please use these column name and mail real property to generate sql:"
-                "Split the sql and only output the 'WHERE' part. "
+                "Split the sql and only output the 'WHERE' part, like 'WHERE ...' "
                 "The database table for email is named 'mail', column name are as below: (do not add below part in output content)"
                 "'message id': MESSAGE_ID, "
                 "'email subject': SUBJECT,"
@@ -79,7 +82,7 @@ def get_related_email_sql(mail_text: str):
     # structured_llm = llm.with_structured_output(schema=MailMessageBM)
 
     # if (mailText == None): mailText = "MIME-Version: 1.0\nDate: Thu, 6 Feb 2025 16:50:56 +0800\nMessage-ID: <CAKHC1N6-KcTmtjzJ+k906qNX5nPcR7H8123ERBmSszQ_KAPLBQ@mail.gmail.com>\nSubject: Greeting email from Nora\nFrom: ZHONG waner <zhongwaner91@gmail.com>\nTo: 1403585646@qq.com\nContent-Type: multipart/alternative; boundary=\"0000000000002859e9062d755748\"\n\n\n--0000000000002859e9062d755748\nContent-Type: text/plain; charset=\"UTF-8\"\n\nHi there,\n\nThe weather is very nice today, hope everything is going well for you!\n\nYours,\nNora\n\n--0000000000002859e9062d755748\nContent-Type: text/html; charset=\"UTF-8\"\n\n<div dir=\"ltr\">Hi there,<div><br><div>The weather is very nice today, hope everything is going well for you!</div><div><br></div><div>Yours,</div><div>Nora</div></div></div>\n\n--0000000000002859e9062d755748--"
-    prompt = prompt_template.invoke({"text": mail_text})
+    prompt = prompt_template.invoke({"text": mail_info_json})
     # mail = structured_llm.invoke(prompt)
     mail = llm.invoke(prompt)
     result = mail.model_dump()
